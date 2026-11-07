@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if item %}Edit Equipment{% else %}Add Equipment{% endif %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form { width: 300px; }
+        div { margin-bottom: 15px; }
+        label { display: block; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 15px; background: green; color: white; border: none; cursor: pointer; }
+        .error { color: red; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>{% if item %}Edit Equipment{% else %}Add Equipment{% endif %}</h2>
+    <div id="error-msg" class="error"></div>
+
+    <form id="equipmentForm" method="POST">
+        {% csrf_token %}
+        <div>
+            <label>Item Name:</label>
+            <input type="text" id="item_name" name="item_name" value="{{ item.item_name|default:'' }}">
+        </div>
+        <div>
+            <label>Sport:</label>
+            <input type="text" id="sport" name="sport" value="{{ item.sport|default:'' }}">
+        </div>
+        <div>
+            <label>Brand:</label>
+            <input type="text" id="brand" name="brand" value="{{ item.brand|default:'' }}">
+        </div>
+        <div>
+            <label>Price:</label>
+            <input type="text" id="price" name="price" value="{{ item.price|default:'' }}">
+        </div>
+        <button type="submit">Save Equipment</button>
+    </form>
+    <br>
+    <a href="{% url 'equipment_list' %}">Back to List</a>
+
+    <!-- Task 2e: JavaScript Validation -->
+    <script>
+        document.getElementById('equipmentForm').addEventListener('submit', function(e) {
+            let name = document.getElementById('item_name').value.trim();
+            let sport = document.getElementById('sport').value.trim();
+            let brand = document.getElementById('brand').value.trim();
+            let price = document.getElementById('price').value.trim();
+            let errorDiv = document.getElementById('error-msg');
+
+            if (!name || !sport || !brand || !price) {
+                e.preventDefault();
+                errorDiv.innerText = "All fields are required and must not be left empty!";
+            }
+        });
+    </script>
+</body>
+</html>
